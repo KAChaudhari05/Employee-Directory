@@ -115,10 +115,16 @@ Developer Push ──> GitHub Repo ──> AWS CodePipeline ──> AWS CodeBuil
 
 ## 📸 Screenshots
 
-### Enterprise Dashboard & Employee Roster View
+### Enterprise Dashboard Overview
 ![Enterprise Dashboard](screenshots/homepage.png)
 
-### Add New Employee Form Modal
+### Employee Directory Roster Table
+![Employee Directory Roster](screenshots/employees.png)
+
+### Workforce Status & Metrics
+![Workforce Status](screenshots/employee-status.png)
+
+### Add/Edit Employee Dialog Form
 ![Add Employee Modal](screenshots/add-employee.png)
 
 ---

@@ -98,5 +98,15 @@
     "phone": "7620222737",
     "status": "Active",
     "avatar": "KC"
+  },
+  {
+    "id": "EMP-012",
+    "name": "Yuti Chaudhari",
+    "department": "HR",
+    "designation": "HR",
+    "email": "yuti@gmail.com",
+    "phone": "9876543213",
+    "status": "Active",
+    "avatar": "YC"
   }
 ]
