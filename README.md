@@ -130,6 +130,12 @@ Developer Push ──> GitHub Repo ──> AWS CodePipeline ──> AWS CodeBuil
 ### AWS EC2 Deployment
 ![AWS EC2 Deployment](screenshots/ec2.png)
 
+### AWS CodePipeline Overview
+![AWS CodePipeline](screenshots/code-pipeline.png)
+
+### Successful Pipeline Execution
+![Pipeline Success](screenshots/successfulExecution.png)
+
 ---
 
 ## 💻 Local Installation & Setup
