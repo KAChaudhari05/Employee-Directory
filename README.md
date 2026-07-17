@@ -127,6 +127,9 @@ Developer Push ──> GitHub Repo ──> AWS CodePipeline ──> AWS CodeBuil
 ### Add/Edit Employee Dialog Form
 ![Add Employee Modal](screenshots/add-employee.png)
 
+### AWS EC2 Deployment
+![AWS EC2 Deployment](screenshots/ec2.png)
+
 ---
 
 ## 💻 Local Installation & Setup
