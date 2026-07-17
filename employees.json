@@ -1,0 +1,102 @@
+[
+  {
+    "id": "EMP-001",
+    "name": "Sarah Connor",
+    "department": "Engineering",
+    "designation": "Principal Software Engineer",
+    "email": "sarah.connor@company.com",
+    "phone": "+1 (555) 019-2834",
+    "status": "Active",
+    "avatar": "SC"
+  },
+  {
+    "id": "EMP-002",
+    "name": "John Doe",
+    "department": "Engineering",
+    "designation": "Frontend Developer",
+    "email": "john.doe@company.com",
+    "phone": "+1 (555) 014-9821",
+    "status": "Inactive",
+    "avatar": "JD"
+  },
+  {
+    "id": "EMP-003",
+    "name": "David Miller",
+    "department": "Marketing",
+    "designation": "Growth Marketing Manager",
+    "email": "david.miller@company.com",
+    "phone": "+1 (555) 017-4839",
+    "status": "Active",
+    "avatar": "DM"
+  },
+  {
+    "id": "EMP-004",
+    "name": "Emily Watson",
+    "department": "HR",
+    "designation": "HR Operations Lead",
+    "email": "emily.watson@company.com",
+    "phone": "+1 (555) 012-7491",
+    "status": "Active",
+    "avatar": "EW"
+  },
+  {
+    "id": "EMP-006",
+    "name": "Jessica Taylor",
+    "department": "Sales",
+    "designation": "Enterprise Account Executive",
+    "email": "jessica.taylor@company.com",
+    "phone": "+1 (555) 011-2830",
+    "status": "Active",
+    "avatar": "JT"
+  },
+  {
+    "id": "EMP-007",
+    "name": "Robert Vance",
+    "department": "Sales",
+    "designation": "VP of Sales",
+    "email": "robert.vance@company.com",
+    "phone": "+1 (555) 013-9481",
+    "status": "Active",
+    "avatar": "RV"
+  },
+  {
+    "id": "EMP-008",
+    "name": "Sophia Martinez",
+    "department": "Engineering",
+    "designation": "DevOps Engineer",
+    "email": "sophia.martinez@company.com",
+    "phone": "+1 (555) 016-3928",
+    "status": "Active",
+    "avatar": "SM"
+  },
+  {
+    "id": "EMP-009",
+    "name": "Daniel Kim",
+    "department": "Marketing",
+    "designation": "SEO Specialist",
+    "email": "daniel.kim@company.com",
+    "phone": "+1 (555) 018-7391",
+    "status": "Inactive",
+    "avatar": "DK"
+  },
+  {
+    "id": "EMP-010",
+    "name": "Amanda Ross",
+    "department": "HR",
+    "designation": "Talent Acquisition Coordinator",
+    "email": "amanda.ross@company.com",
+    "phone": "+1 (555) 019-4820",
+    "status": "Active",
+    "avatar": "AR"
+  },
+  {
+    "id": "EMP-011",
+    "name": "Khushi Chaudhari",
+    "department": "Engineering",
+    "designation": "Software Engineer",
+    "email": "kachaudhari05@gmail.com",
+    "phone": "7620222737",
+    "status": "Active",
+    "avatar": "KC"
+  }
+]

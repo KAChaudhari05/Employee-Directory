@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Directory Management System</title>
+  <!-- Google Font: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #A855F7; /* Amethyst Purple */
+      --primary-hover: #C084FC;
+      --secondary: #06B6D4; /* Aurora Teal */
+      --secondary-light: rgba(6, 182, 212, 0.1);
+      --success: #10B981; /* Emerald */
+      --success-light: rgba(16, 185, 129, 0.15);
+      --danger: #F43F5E; /* Rose */
+      --danger-light: rgba(244, 63, 94, 0.15);
+      --warning: #F59E0B; /* Amber */
+      --warning-light: rgba(245, 158, 11, 0.15);
+      --background: #090D1A;
+      --cards: rgba(17, 24, 39, 0.55);
+      --cards-solid: #111827;
+      --dark-text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --border: rgba(255, 255, 255, 0.08);
+      --font-family: 'Poppins', sans-serif;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--background);
+      background-image: radial-gradient(circle at 50% 0%, #171b30 0%, var(--background) 75%);
+      color: var(--dark-text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* Ambient Glow Orbs */
+    .glow-orb {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      filter: blur(130px);
+      opacity: 0.12;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .glow-1 {
+      top: 15%;
+      left: 5%;
+      background: var(--primary);
+    }
+    .glow-2 {
+      bottom: 25%;
+      right: 5%;
+      background: var(--secondary);
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--background);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1E293B;
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--background);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+
+    /* Keyframe Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes progressLoad {
+      from { width: 0; }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .animated-fade-in {
+      animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+
+    /* Navigation Bar */
+    .navbar {
+      background-color: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      transition: var(--transition);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--dark-text) !important;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+    }
+
+    .navbar-brand i {
+      color: var(--primary);
+      font-size: 1.5rem;
+      text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+    }
+
+    .nav-link {
+      color: var(--text-muted) !important;
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 1rem !important;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--dark-text) !important;
+      background-color: rgba(255, 255, 255, 0.05);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-link.active {
+      color: var(--primary-hover) !important;
+      border-bottom: 2px solid var(--primary);
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .notification-btn {
+      position: relative;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      padding: 0.25rem;
+      transition: var(--transition);
+    }
+
+    .notification-btn:hover {
+      color: var(--primary);
+      transform: scale(1.05);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 8px;
+      height: 8px;
+      background-color: var(--danger);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--danger);
+    }
+
+    .profile-dropdown img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .profile-dropdown img:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      background-color: var(--cards);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 3rem;
+      margin-bottom: 2.5rem;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #FFFFFF 0%, #C084FC 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 400;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      max-width: 580px;
+    }
+
+    .btn-custom-primary {
+      background-color: var(--primary);
+      color: #ffffff;
+      border: none;
+      font-weight: 500;
+      padding: 0.75rem 1.75rem;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 14px rgba(168, 85, 247, 0.35);
+    }
+
+    .btn-custom-primary:hover {
+      background-color: var(--primary-hover);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(168, 85, 247, 0.45);
+    }
+
+    .btn-custom-secondary {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--dark-text);
+      border: 1px solid var(--border);
+      font-weight: 500;
+      padding: 0.75rem 1.75rem;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-custom-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--dark-text);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    /* CSS Illustration */
+    .illustration-container {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .illustration-card {
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      padding: 1.25rem;
+      position: absolute;
+      width: 220px;
+      transition: var(--transition);
+    }
+
+    .illustration-card:hover {
+      transform: scale(1.05) translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-1 {
+      top: 10px;
+      left: 15%;
+      z-index: 2;
+    }
+
+    .card-2 {
+      bottom: 10px;
+      right: 15%;
+      z-index: 3;
+    }
+
+    .card-3 {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      opacity: 0.8;
+      background: var(--secondary-light);
+      border-color: var(--secondary);
+    }
+
+    .ill-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--secondary-light);
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .ill-line {
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 0.5rem;
+    }
+
+    .ill-line.short {
+      width: 60%;
+    }
+
+    .ill-line.medium {
+      width: 85%;
+    }
+
+    .ill-line.primary-color {
+      background: var(--primary);
+      width: 40%;
+    }
+
+    /* Dashboard Cards */
+    .dashboard-card {
+      background-color: var(--cards);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary);
+    }
+
+    .dashboard-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background-color: transparent;
+      transition: var(--transition);
+    }
+
+    .dashboard-card:hover::before {
+      background-color: var(--primary);
+    }
+
+    .card-icon-wrapper {
+      width: 54px;
+      height: 54px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+      transition: var(--transition);
+    }
+
+    .card-total-employees .card-icon-wrapper {
+      background-color: rgba(168, 85, 247, 0.15);
+      color: var(--primary);
+    }
+
+    .card-departments .card-icon-wrapper {
+      background-color: var(--warning-light);
+      color: var(--warning);
+    }
+
+    .card-active-employees .card-icon-wrapper {
+      background-color: var(--success-light);
+      color: var(--success);
+    }
+
+    .card-new-joiners .card-icon-wrapper {
+      background-color: var(--danger-light);
+      color: var(--danger);
+    }
+
+    .card-num {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--dark-text);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin: 0;
+      font-weight: 500;
+    }
+
+    /* Search Section */
+    .search-card {
+      background-color: var(--cards);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 2rem;
+    }
+
+    .form-control, .form-select {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.625rem 0.875rem;
+      font-size: 0.9rem;
+      color: var(--dark-text);
+      transition: var(--transition);
+    }
+
+    .form-control:focus, .form-select:focus {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--dark-text);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25);
+    }
+
+    .form-select option {
+      background-color: var(--cards-solid);
+      color: var(--dark-text);
+    }
+
+    .search-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--dark-text);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Table Container & Table */
+    .table-card {
+      background-color: var(--cards);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .table-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--dark-text);
+      margin: 0;
+    }
+
+    .table {
+      margin: 0;
+      --bs-table-bg: transparent !important;
+      --bs-table-color: var(--dark-text) !important;
+      --bs-table-hover-bg: rgba(255, 255, 255, 0.03) !important;
+      border-color: var(--border) !important;
+    }
+
+    .table th {
+      background-color: rgba(255, 255, 255, 0.03) !important;
+      color: var(--text-muted) !important;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table td {
+      padding: 1rem 1.5rem;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--border);
+      color: var(--dark-text) !important;
+      background-color: transparent !important;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .table tbody tr {
+      transition: var(--transition);
+      background-color: transparent !important;
+    }
+
+    .table tbody tr:hover {
+      background-color: rgba(255, 255, 255, 0.02) !important;
+    }
+
+    /* Employee Avatar & Name info */
+    .employee-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .emp-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: rgba(168, 85, 247, 0.15);
+      color: var(--primary-hover);
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .emp-name {
+      font-weight: 600;
+      color: var(--dark-text);
+      margin: 0;
+    }
+
+    .emp-id-badge {
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Status Badges */
+    .badge-status {
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .badge-status-active {
+      background-color: var(--success-light);
+      color: var(--success);
+    }
+
+    .badge-status-inactive {
+      background-color: var(--danger-light);
+      color: var(--danger);
+    }
+
+    /* Action Buttons */
+    .btn-action {
+      border: none;
+      background: transparent;
+      padding: 0.35rem;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .btn-action:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-action-view:hover { color: var(--secondary); }
+    .btn-action-edit:hover { color: var(--warning); }
+    .btn-action-delete:hover { color: var(--danger); }
+
+    /* Side Cards: Quick Statistics & Recent Activity */
+    .side-card {
+      background-color: var(--cards);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 2rem;
+    }
+
+    .side-card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--dark-text);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Progress Bars styling */
+    .stat-item {
+      margin-bottom: 1.25rem;
+    }
+
+    .stat-label-container {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: var(--dark-text);
+    }
+
+    .stat-percent {
+      color: var(--text-muted);
+    }
+
+    .progress {
+      height: 8px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      background-color: var(--primary);
+      border-radius: 4px;
+      animation: progressLoad 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    .progress-bar-marketing { background-color: var(--secondary); }
+    .progress-bar-hr { background-color: var(--success); }
+    .progress-bar-finance { background-color: var(--warning); }
+    .progress-bar-sales { background-color: var(--danger); }
+
+    /* Recent Activity list */
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .activity-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .activity-icon-wrapper {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.9rem;
+    }
+
+    .activity-icon-join {
+      background-color: var(--success-light);
+      color: var(--success);
+    }
+
+    .activity-icon-update {
+      background-color: rgba(168, 85, 247, 0.15);
+      color: var(--primary);
+    }
+
+    .activity-icon-transfer {
+      background-color: var(--warning-light);
+      color: var(--warning);
+    }
+
+    .activity-icon-promote {
+      background-color: var(--danger-light);
+      color: var(--danger);
+    }
+
+    .activity-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .activity-text {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--dark-text);
+      margin: 0;
+    }
+
+    .activity-time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+    footer {
+      background-color: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 0;
+      margin-top: 4rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Glow Orbs -->
+  <div class="glow-orb glow-1"></div>
+  <div class="glow-orb glow-2"></div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-xl">
+      <a class="navbar-brand" href="#">
+        <i class="fa-solid fa-rectangle-list"></i>
+        <span>Employee Directory</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-chart-pie me-2"></i>Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fa-solid fa-users me-2"></i>Employees</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fa-solid fa-sitemap me-2"></i>Departments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fa-solid fa-chart-line me-2"></i>Reports</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fa-solid fa-sliders me-2"></i>Settings</a>
+          </li>
+        </ul>
+        <div class="nav-actions">
+          <button class="notification-btn" aria-label="Notifications">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notification-badge"></span>
+          </button>
+          <div class="dropdown profile-dropdown">
+            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Admin Profile">
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end text-small shadow-sm border" aria-labelledby="dropdownUser">
+              <li><div class="px-3 py-2 fw-semibold border-bottom mb-2">Alex Mercer <span class="d-block text-muted fw-normal" style="font-size: 0.75rem;">HR Administrator</span></div></li>
+              <li><a class="dropdown-item" href="#">Profile Settings</a></li>
+              <li><a class="dropdown-item" href="#">Activity Log</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Sign out</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Layout -->
+  <div class="container-xl py-5">
+    
+    <!-- Hero Section -->
+    <div class="hero-section animated-fade-in">
+      <div class="row align-items-center">
+        <div class="col-lg-7 mb-4 mb-lg-0">
+          <h1 class="hero-title">Employee Directory Management System</h1>
+          <p class="hero-subtitle">Optimize operations and streamline management of your global workforce. Access employee details, monitor quick statistics, and organize departments in real time.</p>
+          <div class="d-flex flex-wrap gap-3">
+            <button class="btn-custom-primary" id="btnAddEmployee">
+              <i class="fa-solid fa-plus"></i> Add Employee
+            </button>
+            <button class="btn-custom-secondary" id="btnExport">
+              <i class="fa-solid fa-download"></i> Export
+            </button>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <!-- Bootstrap Icons and CSS Only Illustration -->
+          <div class="illustration-container d-none d-md-flex">
+            <!-- Styling dynamic cards representing organizational hierarchy -->
+            <div class="illustration-card card-1">
+              <div class="d-flex align-items-center gap-2">
+                <div class="ill-avatar"><i class="fa-solid fa-user-tie"></i></div>
+                <div class="w-100">
+                  <div class="ill-line primary-color"></div>
+                  <div class="ill-line short"></div>
+                </div>
+              </div>
+            </div>
+            <div class="illustration-card card-2">
+              <div class="d-flex align-items-center gap-2">
+                <div class="ill-avatar" style="background-color: var(--success-light); color: var(--success);"><i class="fa-solid fa-user-gear"></i></div>
+                <div class="w-100">
+                  <div class="ill-line" style="background-color: var(--success); width: 50%;"></div>
+                  <div class="ill-line short"></div>
+                </div>
+              </div>
+            </div>
+            <div class="illustration-card card-3">
+              <div class="d-flex align-items-center gap-2">
+                <div class="ill-avatar"><i class="fa-solid fa-network-wired"></i></div>
+                <div class="w-100">
+                  <div class="ill-line medium"></div>
+                  <div class="ill-line short"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Statistics Section -->
+    <div class="row g-4 mb-5 animated-fade-in delay-1">
+      <div class="col-md-6 col-lg-3">
+        <div class="dashboard-card card-total-employees">
+          <div class="card-icon-wrapper">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <div class="card-num" id="cardTotalEmployees">0</div>
+          <p class="card-desc">Total Employees</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="dashboard-card card-departments">
+          <div class="card-icon-wrapper">
+            <i class="fa-solid fa-sitemap"></i>
+          </div>
+          <div class="card-num" id="cardTotalDepartments">0</div>
+          <p class="card-desc">Departments</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="dashboard-card card-active-employees">
+          <div class="card-icon-wrapper">
+            <i class="fa-solid fa-user-check"></i>
+          </div>
+          <div class="card-num" id="cardActiveEmployees">0</div>
+          <p class="card-desc">Active Employees</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="dashboard-card card-new-joiners">
+          <div class="card-icon-wrapper">
+            <i class="fa-solid fa-user-xmark"></i>
+          </div>
+          <div class="card-num" id="cardInactiveEmployees">0</div>
+          <p class="card-desc">Inactive Employees</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Content Split Area -->
+    <div class="row g-4">
+      
+      <!-- Main Content Area: Search & Table (Left/8 Columns) -->
+      <div class="col-lg-8 animated-fade-in delay-2">
+        
+        <!-- Search Area -->
+        <div class="search-card">
+          <h2 class="search-title">
+            <i class="fa-solid fa-magnifying-glass"></i> Filter Directory
+          </h2>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <input type="text" id="searchQuery" class="form-control" placeholder="Search employee by name, ID, design...">
+            </div>
+            <div class="col-md-3">
+              <select id="filterDepartment" class="form-select">
+                <option value="" selected>All Departments</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Marketing">Marketing</option>
+                <option value="HR">HR</option>
+                <option value="Finance">Finance</option>
+                <option value="Sales">Sales</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select id="filterStatus" class="form-select">
+                <option value="" selected>All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+              <button id="btnSearch" class="btn btn-primary w-100" style="background-color: var(--primary); border: none; font-weight: 500;">
+                Search
+              </button>
+              <button id="btnResetFilters" class="btn btn-outline-secondary" type="button" title="Reset Filters">
+                <i class="fa-solid fa-rotate-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Employee Table Card -->
+        <div class="table-card">
+          <div class="table-header">
+            <h3 class="table-title">Employee Roster</h3>
+            <span id="tableRecordCount" class="badge bg-light text-dark border fw-normal py-2 px-3">Showing 0 of 0 records</span>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>Employee ID</th>
+                  <th>Employee Name</th>
+                  <th>Department</th>
+                  <th>Designation</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Status</th>
+                  <th class="text-end">Action</th>
+                </tr>
+              </thead>
+              <tbody id="employeeTableBody">
+                <!-- Data will be dynamically loaded here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sidebar Contents (Right/4 Columns) -->
+      <div class="col-lg-4 animated-fade-in delay-3">
+        
+        <!-- Quick Statistics -->
+        <div class="side-card">
+          <h3 class="side-card-title">Quick Statistics</h3>
+          <div class="stat-item">
+            <div class="stat-label-container">
+              <span class="stat-label">Engineering</span>
+              <span class="stat-percent" id="pctEngineering">0%</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar" id="barEngineering" style="width: 0%;" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label-container">
+              <span class="stat-label">Marketing</span>
+              <span class="stat-percent" id="pctMarketing">0%</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar progress-bar-marketing" id="barMarketing" style="width: 0%;" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label-container">
+              <span class="stat-label">HR</span>
+              <span class="stat-percent" id="pctHR">0%</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar progress-bar-hr" id="barHR" style="width: 0%;" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label-container">
+              <span class="stat-label">Finance</span>
+              <span class="stat-percent" id="pctFinance">0%</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar progress-bar-finance" id="barFinance" style="width: 0%;" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <div class="stat-item mb-0">
+            <div class="stat-label-container">
+              <span class="stat-label">Sales</span>
+              <span class="stat-percent" id="pctSales">0%</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar progress-bar-sales" id="barSales" style="width: 0%;" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="side-card">
+          <h3 class="side-card-title">Recent Activity</h3>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-icon-wrapper activity-icon-join">
+                <i class="fa-solid fa-user-plus"></i>
+              </div>
+              <div class="activity-details">
+                <p class="activity-text"><strong>John</strong> joined Engineering</p>
+                <span class="activity-time">10 minutes ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon-wrapper activity-icon-update">
+                <i class="fa-regular fa-pen-to-square"></i>
+              </div>
+              <div class="activity-details">
+                <p class="activity-text"><strong>Sarah</strong> updated profile</p>
+                <span class="activity-time">45 minutes ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon-wrapper activity-icon-transfer">
+                <i class="fa-solid fa-shuffle"></i>
+              </div>
+              <div class="activity-details">
+                <p class="activity-text"><strong>David</strong> transferred department</p>
+                <span class="activity-time">2 hours ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon-wrapper activity-icon-promote">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+              </div>
+              <div class="activity-details">
+                <p class="activity-text"><strong>Emily</strong> promoted to HR Lead</p>
+                <span class="activity-time">4 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center">
+    <div class="container-xl">
+      <p class="mb-1 fw-semibold text-dark">Employee Directory</p>
+      <p class="mb-2" style="font-size: 0.8rem;">© 2026 Enterprise Inc. All rights reserved.</p>
+      <div class="d-flex justify-content-center gap-2 align-items-center">
+        <span>Built with</span>
+        <a href="https://nodejs.org/" target="_blank">Node.js</a>
+        <span>&</span>
+        <a href="https://expressjs.com/" target="_blank">Express</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Alert Container for Toasts -->
+  <div id="alertContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1080;"></div>
+
+  <!-- Add/Edit Employee Modal -->
+  <div class="modal fade" id="employeeModal" tabindex="-1" aria-labelledby="employeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="background-color: #111827; border: 1px solid var(--border); color: var(--dark-text);">
+        <div class="modal-header" style="border-bottom: 1px solid var(--border);">
+          <h5 class="modal-title" id="employeeModalLabel">Add Employee</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="employeeForm">
+          <div class="modal-body">
+            <input type="hidden" id="employeeId">
+            <div class="mb-3">
+              <label for="modalName" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="modalName" required placeholder="e.g. John Doe">
+            </div>
+            <div class="mb-3">
+              <label for="modalDepartment" class="form-label">Department</label>
+              <select class="form-select" id="modalDepartment" required>
+                <option value="" disabled selected>Select Department</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Marketing">Marketing</option>
+                <option value="HR">HR</option>
+                <option value="Finance">Finance</option>
+                <option value="Sales">Sales</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="modalDesignation" class="form-label">Designation</label>
+              <input type="text" class="form-control" id="modalDesignation" required placeholder="e.g. Frontend Developer">
+            </div>
+            <div class="mb-3">
+              <label for="modalEmail" class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="modalEmail" required placeholder="e.g. john.doe@company.com">
+            </div>
+            <div class="mb-3">
+              <label for="modalPhone" class="form-label">Phone Number</label>
+              <input type="text" class="form-control" id="modalPhone" required placeholder="e.g. +1 (555) 019-2834">
+            </div>
+            <div class="mb-3">
+              <label for="modalStatus" class="form-label">Status</label>
+              <select class="form-select" id="modalStatus" required>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer" style="border-top: 1px solid var(--border);">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: rgba(255,255,255,0.05); border: 1px solid var(--border);">Cancel</button>
+            <button type="submit" class="btn btn-primary" style="background-color: var(--primary); border: none;">Save Employee</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content" style="background-color: #111827; border: 1px solid var(--border); color: var(--dark-text);">
+        <div class="modal-header" style="border-bottom: 1px solid var(--border);">
+          <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Delete</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center py-4">
+          <i class="fa-solid fa-triangle-exclamation text-danger mb-3" style="font-size: 2.5rem;"></i>
+          <p class="mb-0">Are you sure you want to delete this employee?</p>
+        </div>
+        <div class="modal-footer" style="border-top: 1px solid var(--border);">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: rgba(255,255,255,0.05); border: 1px solid var(--border);">No</button>
+          <button type="button" class="btn btn-danger" id="btnConfirmDelete" style="background-color: var(--danger); border: none;">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Employee Profile Modal -->
+  <div class="modal fade" id="viewEmployeeModal" tabindex="-1" aria-labelledby="viewEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="background-color: #111827; border: 1px solid var(--border); color: var(--dark-text);">
+        <div class="modal-header" style="border-bottom: 1px solid var(--border);">
+          <h5 class="modal-title" id="viewEmployeeModalLabel">Employee Profile</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center py-4">
+          <div id="viewEmpAvatar" class="mx-auto mb-3" style="width: 80px; height: 80px; border-radius: 50%; background-color: rgba(168, 85, 247, 0.15); color: var(--primary-hover); font-weight: 700; font-size: 2rem; display: flex; align-items: center; justify-content: center;"></div>
+          <h4 id="viewEmpName" class="fw-bold mb-1"></h4>
+          <p id="viewEmpDesignation" class="text-muted mb-3"></p>
+          
+          <hr style="border-color: var(--border); margin: 1.5rem 0;">
+          
+          <div class="row text-start g-3 px-3">
+            <div class="col-6">
+              <span class="text-muted d-block small">Employee ID</span>
+              <span id="viewEmpId" class="fw-semibold"></span>
+            </div>
+            <div class="col-6">
+              <span class="text-muted d-block small">Department</span>
+              <span id="viewEmpDepartment" class="fw-semibold"></span>
+            </div>
+            <div class="col-6">
+              <span class="text-muted d-block small">Email Address</span>
+              <span id="viewEmpEmail" class="fw-semibold text-break"></span>
+            </div>
+            <div class="col-6">
+              <span class="text-muted d-block small">Phone Number</span>
+              <span id="viewEmpPhone" class="fw-semibold"></span>
+            </div>
+            <div class="col-6">
+              <span class="text-muted d-block small">Status</span>
+              <span id="viewEmpStatus" class="badge-status"></span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-top: 1px solid var(--border);">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: rgba(255,255,255,0.05); border: 1px solid var(--border);">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State management
+    let employees = [];
+    let activeDeleteId = null;
+
+    // Bootstrap Modal instances
+    let employeeModal;
+    let deleteConfirmModal;
+    let viewEmployeeModal;
+
+    // DOM Elements
+    const employeeTableBody = document.getElementById('employeeTableBody');
+    const tableRecordCount = document.getElementById('tableRecordCount');
+    const employeeForm = document.getElementById('employeeForm');
+    const employeeIdInput = document.getElementById('employeeId');
+    const modalTitle = document.getElementById('employeeModalLabel');
+
+    // Input fields
+    const modalName = document.getElementById('modalName');
+    const modalDepartment = document.getElementById('modalDepartment');
+    const modalDesignation = document.getElementById('modalDesignation');
+    const modalEmail = document.getElementById('modalEmail');
+    const modalPhone = document.getElementById('modalPhone');
+    const modalStatus = document.getElementById('modalStatus');
+
+    // Search and Filter fields
+    const searchQuery = document.getElementById('searchQuery');
+    const filterDepartment = document.getElementById('filterDepartment');
+    const filterStatus = document.getElementById('filterStatus');
+    const btnSearch = document.getElementById('btnSearch');
+    const btnResetFilters = document.getElementById('btnResetFilters');
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
+      // Instantiate Modals
+      employeeModal = new bootstrap.Modal(document.getElementById('employeeModal'));
+      deleteConfirmModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+      viewEmployeeModal = new bootstrap.Modal(document.getElementById('viewEmployeeModal'));
+
+      // Event Listeners
+      document.getElementById('btnAddEmployee').addEventListener('click', () => openModal('add'));
+      employeeForm.addEventListener('submit', saveEmployee);
+      document.getElementById('btnConfirmDelete').addEventListener('click', confirmDelete);
+
+      // Search & Filters (Instant live filtering)
+      searchQuery.addEventListener('input', filterEmployees);
+      filterDepartment.addEventListener('change', filterEmployees);
+      filterStatus.addEventListener('change', filterEmployees);
+      btnSearch.addEventListener('click', filterEmployees);
+      btnResetFilters.addEventListener('click', resetFilters);
+
+      // Load data
+      loadEmployees();
+    });
+
+    // Fetch employees from API
+    async function loadEmployees() {
+      showLoadingState();
+      try {
+        const response = await fetch('/api/employees');
+        if (!response.ok) throw new Error('Failed to load data');
+        employees = await response.json();
+        
+        updateDashboard();
+        renderTable(employees);
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+        employeeTableBody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center py-5 text-danger">
+              <i class="fa-solid fa-triangle-exclamation mb-2" style="font-size: 2rem;"></i>
+              <div>Failed to load employees from API. Please try again.</div>
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    // Render loading spinner
+    function showLoadingState() {
+      employeeTableBody.innerHTML = `
+        <tr>
+          <td colspan="8" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <div class="mt-2 text-muted" style="font-size: 0.85rem;">Retrieving directory...</div>
+          </td>
+        </tr>
+      `;
+    }
+
+    // Render employees list into table
+    function renderTable(dataList) {
+      if (!dataList || dataList.length === 0) {
+        employeeTableBody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center py-5 text-muted">
+              <i class="fa-solid fa-folder-open mb-2" style="font-size: 2rem; opacity: 0.5;"></i>
+              <div>No Employees Found</div>
+            </td>
+          </tr>
+        `;
+        tableRecordCount.textContent = `Showing 0 of ${employees.length} records`;
+        return;
+      }
+
+      let html = '';
+      dataList.forEach(emp => {
+        const statusClass = emp.status === 'Active' ? 'badge-status-active' : 'badge-status-inactive';
+        
+        html += `
+          <tr class="animated-fade-in">
+            <td class="emp-id-badge">${emp.id}</td>
+            <td>
+              <div class="employee-profile">
+                <div class="emp-avatar">${emp.avatar || 'EE'}</div>
+                <div>
+                  <p class="emp-name">${escapeHTML(emp.name)}</p>
+                </div>
+              </div>
+            </td>
+            <td>${escapeHTML(emp.department)}</td>
+            <td>${escapeHTML(emp.designation)}</td>
+            <td>${escapeHTML(emp.email)}</td>
+            <td>${escapeHTML(emp.phone)}</td>
+            <td>
+              <span class="badge-status ${statusClass}">
+                <i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> ${emp.status}
+              </span>
+            </td>
+            <td class="text-end">
+              <button class="btn-action btn-action-view" onclick="viewProfile('${emp.id}')" title="View Profile"><i class="fa-regular fa-eye"></i></button>
+              <button class="btn-action btn-action-edit" onclick="openModal('edit', '${emp.id}')" title="Edit Employee"><i class="fa-regular fa-pen-to-square"></i></button>
+              <button class="btn-action btn-action-delete" onclick="askDelete('${emp.id}')" title="Delete Employee"><i class="fa-regular fa-trash-can"></i></button>
+            </td>
+          </tr>
+        `;
+      });
+
+      employeeTableBody.innerHTML = html;
+      tableRecordCount.textContent = `Showing ${dataList.length} of ${employees.length} records`;
+    }
+
+    // Client-side filtering logic
+    function filterEmployees() {
+      const q = searchQuery.value.toLowerCase().trim();
+      const dept = filterDepartment.value;
+      const status = filterStatus.value;
+
+      const filtered = employees.filter(emp => {
+        const matchesSearch = 
+          emp.name.toLowerCase().includes(q) || 
+          emp.id.toLowerCase().includes(q) || 
+          emp.designation.toLowerCase().includes(q) ||
+          emp.email.toLowerCase().includes(q);
+        
+        const matchesDept = !dept || emp.department === dept;
+        const matchesStatus = !status || emp.status === status;
+
+        return matchesSearch && matchesDept && matchesStatus;
+      });
+
+      renderTable(filtered);
+    }
+
+    // Reset all filter inputs
+    function resetFilters() {
+      searchQuery.value = '';
+      filterDepartment.value = '';
+      filterStatus.value = '';
+      renderTable(employees);
+    }
+
+    // Update statistics dashboard and quick statistics sidebar
+    function updateDashboard() {
+      const total = employees.length;
+      const departments = new Set(employees.map(e => e.department));
+      const active = employees.filter(e => e.status === 'Active').length;
+      const inactive = total - active;
+
+      document.getElementById('cardTotalEmployees').textContent = total.toLocaleString();
+      document.getElementById('cardTotalDepartments').textContent = departments.size;
+      document.getElementById('cardActiveEmployees').textContent = active.toLocaleString();
+      document.getElementById('cardInactiveEmployees').textContent = inactive.toLocaleString();
+
+      // Department percentages for sidebar progress bars
+      const depts = ['Engineering', 'Marketing', 'HR', 'Finance', 'Sales'];
+      depts.forEach(d => {
+        const count = employees.filter(e => e.department === d).length;
+        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+        
+        const pctEl = document.getElementById(`pct${d}`);
+        const barEl = document.getElementById(`bar${d}`);
+        
+        if (pctEl && barEl) {
+          pctEl.textContent = `${pct}%`;
+          barEl.style.width = `${pct}%`;
+          barEl.setAttribute('aria-valuenow', pct);
+        }
+      });
+    }
+
+    // View Profile Read-only modal
+    function viewProfile(id) {
+      const emp = employees.find(e => e.id === id);
+      if (!emp) return;
+
+      document.getElementById('viewEmpAvatar').textContent = emp.avatar || 'EE';
+      document.getElementById('viewEmpName').textContent = emp.name;
+      document.getElementById('viewEmpDesignation').textContent = emp.designation;
+      document.getElementById('viewEmpId').textContent = emp.id;
+      document.getElementById('viewEmpDepartment').textContent = emp.department;
+      document.getElementById('viewEmpEmail').textContent = emp.email;
+      document.getElementById('viewEmpPhone').textContent = emp.phone;
+      
+      const statusEl = document.getElementById('viewEmpStatus');
+      statusEl.className = `badge-status ${emp.status === 'Active' ? 'badge-status-active' : 'badge-status-inactive'}`;
+      statusEl.innerHTML = `<i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> ${emp.status}`;
+
+      viewEmployeeModal.show();
+    }
+
+    // Open Form Modal for Create or Update
+    function openModal(mode, id = null) {
+      employeeForm.reset();
+      employeeIdInput.value = '';
+      
+      if (mode === 'add') {
+        modalTitle.textContent = 'Add Employee';
+        modalStatus.value = 'Active';
+        employeeModal.show();
+      } else if (mode === 'edit') {
+        modalTitle.textContent = 'Edit Employee';
+        const emp = employees.find(e => e.id === id);
+        if (!emp) return;
+
+        employeeIdInput.value = emp.id;
+        modalName.value = emp.name;
+        modalDepartment.value = emp.department;
+        modalDesignation.value = emp.designation;
+        modalEmail.value = emp.email;
+        modalPhone.value = emp.phone;
+        modalStatus.value = emp.status;
+
+        employeeModal.show();
+      }
+    }
+
+    // Save Employee Form Handler (POST/PUT)
+    async function saveEmployee(e) {
+      e.preventDefault();
+      
+      const id = employeeIdInput.value;
+      const payload = {
+        name: modalName.value.trim(),
+        department: modalDepartment.value,
+        designation: modalDesignation.value.trim(),
+        email: modalEmail.value.trim(),
+        phone: modalPhone.value.trim(),
+        status: modalStatus.value
+      };
+
+      const url = id ? `/api/employees/${id}` : '/api/employees';
+      const method = id ? 'PUT' : 'POST';
+
+      try {
+        const response = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          const errData = await response.json();
+          throw new Error(errData.message || 'Operation failed');
+        }
+
+        showAlert(id ? 'Employee Updated Successfully' : 'Employee Added Successfully', 'success');
+        employeeModal.hide();
+        loadEmployees();
+      } catch (error) {
+        console.error('Error saving employee:', error);
+        showAlert(error.message || 'Failed to save employee records.', 'danger');
+      }
+    }
+
+    // Ask to delete confirmation modal
+    function askDelete(id) {
+      activeDeleteId = id;
+      deleteConfirmModal.show();
+    }
+
+    // Confirm and call Delete API
+    async function confirmDelete() {
+      if (!activeDeleteId) return;
+
+      try {
+        const response = await fetch(`/api/employees/${activeDeleteId}`, { method: 'DELETE' });
+        if (!response.ok) throw new Error('Failed to delete record');
+
+        showAlert('Employee Deleted Successfully', 'success');
+        deleteConfirmModal.hide();
+        loadEmployees();
+      } catch (error) {
+        console.error('Error deleting employee:', error);
+        showAlert('Failed to delete employee.', 'danger');
+      } finally {
+        activeDeleteId = null;
+      }
+    }
+
+    // Helper to escape HTML characters
+    function escapeHTML(str) {
+      if (!str) return '';
+      return str.replace(/[&<>'"]/g, 
+        tag => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          "'": '&#39;',
+          '"': '&quot;'
+        }[tag] || tag)
+      );
+    }
+
+    // Dynamic toast alerts builder
+    function showAlert(message, type = 'success') {
+      const container = document.getElementById('alertContainer');
+      const bgClass = type === 'success' ? 'var(--success)' : 'var(--danger)';
+      const icon = type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation';
+
+      const alertEl = document.createElement('div');
+      alertEl.className = 'alert alert-dismissible fade show border-0 text-white shadow-lg mb-2';
+      alertEl.style.cssText = `background-color: ${bgClass}; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 500; min-width: 250px;`;
+      alertEl.innerHTML = `
+        <div class="d-flex align-items-center gap-2">
+          <i class="fa-solid ${icon}"></i>
+          <span>${message}</span>
+          <button type="button" class="btn-close btn-close-white ms-auto" style="padding: 0.8rem 1rem;" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      `;
+
+      container.appendChild(alertEl);
+
+      // Auto dismiss after 3 seconds
+      setTimeout(() => {
+        const bsAlert = new bootstrap.Alert(alertEl);
+        bsAlert.close();
+      }, 3000);
+    }
+  </script>
+
+  <!-- Bootstrap 5 JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
